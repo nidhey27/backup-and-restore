@@ -4,9 +4,9 @@ kind: BackupNRestore
 metadata:
   name: backup-n-restore-1
 spec:
-  backup: false
+  backup: true
   namespace: default
-  pvcname: test
-  resourcename: test
+  pvcname: pvc-claim-3
+  resourcename: ""
   restore: false
-  snapshotname: test
+  snapshotname: ""
