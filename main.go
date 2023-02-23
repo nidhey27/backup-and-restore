@@ -41,7 +41,7 @@ func main() {
 	fmt.Printf("Enter PVC Name from %s to take Snapshot of:\n", namespace)
 	fmt.Scan(&pvcName)
 
-	coreClientset, err := kubernetes.NewForConfig(config)
+	coreClientset, err := kubernetes.NobjectewForConfig(config)
 	if err != nil {
 		log.Printf("getting CORE CLIENT SET  %s\n", err.Error())
 	}
