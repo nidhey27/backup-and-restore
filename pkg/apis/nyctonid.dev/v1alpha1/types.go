@@ -17,12 +17,16 @@ type Respaldo struct {
 }
 
 type RespaldoSpec struct {
-	Namespace    string `json:"namespace,omitempty" binding:"required"`
-	PVCName      string `json:"pvcname,omitempty"`
-	ResourceName string `json:"resourcename,omitempty"`
-	SnapshotName string `json:"snapshotname,omitempty"`
-	Backup       bool   `json:"backup,omitempty"`
-	Restore      bool   `json:"restore,omitempty"`
+	// +kubebuilder:validation:Required
+	Namespace string `json:"namespace"`
+	// +kubebuilder:validation:Required
+	PVCName      string `json:"pvcname"`
+	ResourceName string `json:"resourcename"`
+	SnapshotName string `json:"snapshotname"`
+	// +kubebuilder:validation:Required
+	Backup bool `json:"backup"`
+	// +kubebuilder:validation:Required
+	Restore bool `json:"restore"`
 }
 
 type RespaldoStatus struct {

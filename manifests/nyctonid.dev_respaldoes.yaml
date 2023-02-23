@@ -52,12 +52,14 @@ spec:
                 type: boolean
               snapshotname:
                 type: string
+            required:
+            - backup
+            - namespace
+            - pvcname
+            - resourcename
+            - restore
+            - snapshotname
             type: object
-            required: 
-              - backup
-              - namespace
-              - pvcname
-              - restore
           status:
             properties:
               kubeConfig:

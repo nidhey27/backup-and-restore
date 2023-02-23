@@ -4,4 +4,9 @@ kind: Respaldo
 metadata:
   name: respaldo-1
 spec:
-  
+  backup: false
+  namespace: default
+  pvcname: test
+  resourcename: test
+  restore: false
+  snapshotname: test

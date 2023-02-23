@@ -21,7 +21,7 @@ package v1alpha1
 // RespaldoStatusApplyConfiguration represents an declarative configuration of the RespaldoStatus type for use
 // with apply.
 type RespaldoStatusApplyConfiguration struct {
-	RespaldoID *string `json:"klusterID,omitempty"`
+	RespaldoID *string `json:"respaldoID,omitempty"`
 	Progress   *string `json:"progress,omitempty"`
 	KubeConfig *string `json:"kubeConfig,omitempty"`
 }
