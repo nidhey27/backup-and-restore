@@ -18,32 +18,32 @@ limitations under the License.
 
 package v1alpha1
 
-// RespaldoStatusApplyConfiguration represents an declarative configuration of the RespaldoStatus type for use
+// BackupNRestoreStatusApplyConfiguration represents an declarative configuration of the BackupNRestoreStatus type for use
 // with apply.
-type RespaldoStatusApplyConfiguration struct {
-	RespaldoID *string `json:"respaldoID,omitempty"`
-	Progress   *string `json:"progress,omitempty"`
-	KubeConfig *string `json:"kubeConfig,omitempty"`
+type BackupNRestoreStatusApplyConfiguration struct {
+	BackupNRestoreID *string `json:"BackupNRestoreID,omitempty"`
+	Progress         *string `json:"progress,omitempty"`
+	KubeConfig       *string `json:"kubeConfig,omitempty"`
 }
 
-// RespaldoStatusApplyConfiguration constructs an declarative configuration of the RespaldoStatus type for use with
+// BackupNRestoreStatusApplyConfiguration constructs an declarative configuration of the BackupNRestoreStatus type for use with
 // apply.
-func RespaldoStatus() *RespaldoStatusApplyConfiguration {
-	return &RespaldoStatusApplyConfiguration{}
+func BackupNRestoreStatus() *BackupNRestoreStatusApplyConfiguration {
+	return &BackupNRestoreStatusApplyConfiguration{}
 }
 
-// WithRespaldoID sets the RespaldoID field in the declarative configuration to the given value
+// WithBackupNRestoreID sets the BackupNRestoreID field in the declarative configuration to the given value
 // and returns the receiver, so that objects can be built by chaining "With" function invocations.
-// If called multiple times, the RespaldoID field is set to the value of the last call.
-func (b *RespaldoStatusApplyConfiguration) WithRespaldoID(value string) *RespaldoStatusApplyConfiguration {
-	b.RespaldoID = &value
+// If called multiple times, the BackupNRestoreID field is set to the value of the last call.
+func (b *BackupNRestoreStatusApplyConfiguration) WithBackupNRestoreID(value string) *BackupNRestoreStatusApplyConfiguration {
+	b.BackupNRestoreID = &value
 	return b
 }
 
 // WithProgress sets the Progress field in the declarative configuration to the given value
 // and returns the receiver, so that objects can be built by chaining "With" function invocations.
 // If called multiple times, the Progress field is set to the value of the last call.
-func (b *RespaldoStatusApplyConfiguration) WithProgress(value string) *RespaldoStatusApplyConfiguration {
+func (b *BackupNRestoreStatusApplyConfiguration) WithProgress(value string) *BackupNRestoreStatusApplyConfiguration {
 	b.Progress = &value
 	return b
 }
@@ -51,7 +51,7 @@ func (b *RespaldoStatusApplyConfiguration) WithProgress(value string) *RespaldoS
 // WithKubeConfig sets the KubeConfig field in the declarative configuration to the given value
 // and returns the receiver, so that objects can be built by chaining "With" function invocations.
 // If called multiple times, the KubeConfig field is set to the value of the last call.
-func (b *RespaldoStatusApplyConfiguration) WithKubeConfig(value string) *RespaldoStatusApplyConfiguration {
+func (b *BackupNRestoreStatusApplyConfiguration) WithKubeConfig(value string) *BackupNRestoreStatusApplyConfiguration {
 	b.KubeConfig = &value
 	return b
 }

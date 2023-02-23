@@ -1,4 +1,4 @@
-module github.com/nidhey27/respaldo
+module github.com/nidhey27/backup-and-restore
 
 go 1.19
 

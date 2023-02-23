@@ -9,14 +9,14 @@ import (
 // +kubebuilder:subresource:status
 // +kubebuilder:printcolumn:name="ClusterID",type=string,JSONPath=`.status.respaldoID`
 // +kubebuilder:printcolumn:name="Progress",type=string,JSONPath=`.status.progress`
-type Respaldo struct {
+type BackupNRestore struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	Spec              RespaldoSpec   `json:"spec,omitempty"`
-	Status            RespaldoStatus `json:"status,omitempty"`
+	Spec              BackupNRestoreSpec   `json:"spec,omitempty"`
+	Status            BackupNRestoreStatus `json:"status,omitempty"`
 }
 
-type RespaldoSpec struct {
+type BackupNRestoreSpec struct {
 	// +kubebuilder:validation:Required
 	Namespace string `json:"namespace"`
 	// +kubebuilder:validation:Required
@@ -29,16 +29,16 @@ type RespaldoSpec struct {
 	Restore bool `json:"restore"`
 }
 
-type RespaldoStatus struct {
-	RespaldoID string `json:"respaldoID,omitempty"`
-	Progress   string `json:"progress,omitempty"`
-	KubeConfig string `json:"kubeConfig,omitempty"`
+type BackupNRestoreStatus struct {
+	BackupNRestoreID string `json:"BackupNRestoreID,omitempty"`
+	Progress         string `json:"progress,omitempty"`
+	KubeConfig       string `json:"kubeConfig,omitempty"`
 }
 
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
-type RespaldoList struct {
+type BackupNRestoreList struct {
 	metav1.TypeMeta `json:",inline"`
 	metav1.ListMeta `json:"metadata,omitempty"`
 
-	Items []Respaldo `json:"items,omitempty"`
+	Items []BackupNRestore `json:"items,omitempty"`
 }

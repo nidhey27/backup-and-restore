@@ -18,4 +18,4 @@ limitations under the License.
 
 package v1alpha1
 
-type RespaldoExpansion interface{}
+type BackupNRestoreExpansion interface{}

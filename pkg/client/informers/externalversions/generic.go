@@ -21,7 +21,7 @@ package externalversions
 import (
 	"fmt"
 
-	v1alpha1 "github.com/nidhey27/respaldo/pkg/apis/nyctonid.dev/v1alpha1"
+	v1alpha1 "github.com/nidhey27/backup-and-restore/pkg/apis/nyctonid.dev/v1alpha1"
 	schema "k8s.io/apimachinery/pkg/runtime/schema"
 	cache "k8s.io/client-go/tools/cache"
 )
@@ -53,8 +53,8 @@ func (f *genericInformer) Lister() cache.GenericLister {
 func (f *sharedInformerFactory) ForResource(resource schema.GroupVersionResource) (GenericInformer, error) {
 	switch resource {
 	// Group=nyctonid.dev, Version=v1alpha1
-	case v1alpha1.SchemeGroupVersion.WithResource("respaldos"):
-		return &genericInformer{resource: resource.GroupResource(), informer: f.Nyctonid().V1alpha1().Respaldos().Informer()}, nil
+	case v1alpha1.SchemeGroupVersion.WithResource("backupnrestores"):
+		return &genericInformer{resource: resource.GroupResource(), informer: f.Nyctonid().V1alpha1().BackupNRestores().Informer()}, nil
 
 	}
 

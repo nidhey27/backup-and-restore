@@ -23,9 +23,9 @@ import (
 	sync "sync"
 	time "time"
 
-	versioned "github.com/nidhey27/respaldo/pkg/client/clientset/versioned"
-	internalinterfaces "github.com/nidhey27/respaldo/pkg/client/informers/externalversions/internalinterfaces"
-	nyctoniddev "github.com/nidhey27/respaldo/pkg/client/informers/externalversions/nyctonid.dev"
+	versioned "github.com/nidhey27/backup-and-restore/pkg/client/clientset/versioned"
+	internalinterfaces "github.com/nidhey27/backup-and-restore/pkg/client/informers/externalversions/internalinterfaces"
+	nyctoniddev "github.com/nidhey27/backup-and-restore/pkg/client/informers/externalversions/nyctonid.dev"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	runtime "k8s.io/apimachinery/pkg/runtime"
 	schema "k8s.io/apimachinery/pkg/runtime/schema"

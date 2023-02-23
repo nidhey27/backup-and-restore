@@ -22,7 +22,7 @@ import (
 	"fmt"
 	"net/http"
 
-	nyctonidv1alpha1 "github.com/nidhey27/respaldo/pkg/client/clientset/versioned/typed/nyctonid.dev/v1alpha1"
+	nyctonidv1alpha1 "github.com/nidhey27/backup-and-restore/pkg/client/clientset/versioned/typed/nyctonid.dev/v1alpha1"
 	discovery "k8s.io/client-go/discovery"
 	rest "k8s.io/client-go/rest"
 	flowcontrol "k8s.io/client-go/util/flowcontrol"

@@ -19,8 +19,8 @@ limitations under the License.
 package applyconfiguration
 
 import (
-	v1alpha1 "github.com/nidhey27/respaldo/pkg/apis/nyctonid.dev/v1alpha1"
-	nyctoniddevv1alpha1 "github.com/nidhey27/respaldo/pkg/client/applyconfiguration/nyctonid.dev/v1alpha1"
+	v1alpha1 "github.com/nidhey27/backup-and-restore/pkg/apis/nyctonid.dev/v1alpha1"
+	nyctoniddevv1alpha1 "github.com/nidhey27/backup-and-restore/pkg/client/applyconfiguration/nyctonid.dev/v1alpha1"
 	schema "k8s.io/apimachinery/pkg/runtime/schema"
 )
 
@@ -29,12 +29,12 @@ import (
 func ForKind(kind schema.GroupVersionKind) interface{} {
 	switch kind {
 	// Group=nyctonid.dev, Version=v1alpha1
-	case v1alpha1.SchemeGroupVersion.WithKind("Respaldo"):
-		return &nyctoniddevv1alpha1.RespaldoApplyConfiguration{}
-	case v1alpha1.SchemeGroupVersion.WithKind("RespaldoSpec"):
-		return &nyctoniddevv1alpha1.RespaldoSpecApplyConfiguration{}
-	case v1alpha1.SchemeGroupVersion.WithKind("RespaldoStatus"):
-		return &nyctoniddevv1alpha1.RespaldoStatusApplyConfiguration{}
+	case v1alpha1.SchemeGroupVersion.WithKind("BackupNRestore"):
+		return &nyctoniddevv1alpha1.BackupNRestoreApplyConfiguration{}
+	case v1alpha1.SchemeGroupVersion.WithKind("BackupNRestoreSpec"):
+		return &nyctoniddevv1alpha1.BackupNRestoreSpecApplyConfiguration{}
+	case v1alpha1.SchemeGroupVersion.WithKind("BackupNRestoreStatus"):
+		return &nyctoniddevv1alpha1.BackupNRestoreStatusApplyConfiguration{}
 
 	}
 	return nil

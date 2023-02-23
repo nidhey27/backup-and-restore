@@ -18,9 +18,9 @@ limitations under the License.
 
 package v1alpha1
 
-// RespaldoSpecApplyConfiguration represents an declarative configuration of the RespaldoSpec type for use
+// BackupNRestoreSpecApplyConfiguration represents an declarative configuration of the BackupNRestoreSpec type for use
 // with apply.
-type RespaldoSpecApplyConfiguration struct {
+type BackupNRestoreSpecApplyConfiguration struct {
 	Namespace    *string `json:"namespace,omitempty"`
 	PVCName      *string `json:"pvcname,omitempty"`
 	ResourceName *string `json:"resourcename,omitempty"`
@@ -29,16 +29,16 @@ type RespaldoSpecApplyConfiguration struct {
 	Restore      *bool   `json:"restore,omitempty"`
 }
 
-// RespaldoSpecApplyConfiguration constructs an declarative configuration of the RespaldoSpec type for use with
+// BackupNRestoreSpecApplyConfiguration constructs an declarative configuration of the BackupNRestoreSpec type for use with
 // apply.
-func RespaldoSpec() *RespaldoSpecApplyConfiguration {
-	return &RespaldoSpecApplyConfiguration{}
+func BackupNRestoreSpec() *BackupNRestoreSpecApplyConfiguration {
+	return &BackupNRestoreSpecApplyConfiguration{}
 }
 
 // WithNamespace sets the Namespace field in the declarative configuration to the given value
 // and returns the receiver, so that objects can be built by chaining "With" function invocations.
 // If called multiple times, the Namespace field is set to the value of the last call.
-func (b *RespaldoSpecApplyConfiguration) WithNamespace(value string) *RespaldoSpecApplyConfiguration {
+func (b *BackupNRestoreSpecApplyConfiguration) WithNamespace(value string) *BackupNRestoreSpecApplyConfiguration {
 	b.Namespace = &value
 	return b
 }
@@ -46,7 +46,7 @@ func (b *RespaldoSpecApplyConfiguration) WithNamespace(value string) *RespaldoSp
 // WithPVCName sets the PVCName field in the declarative configuration to the given value
 // and returns the receiver, so that objects can be built by chaining "With" function invocations.
 // If called multiple times, the PVCName field is set to the value of the last call.
-func (b *RespaldoSpecApplyConfiguration) WithPVCName(value string) *RespaldoSpecApplyConfiguration {
+func (b *BackupNRestoreSpecApplyConfiguration) WithPVCName(value string) *BackupNRestoreSpecApplyConfiguration {
 	b.PVCName = &value
 	return b
 }
@@ -54,7 +54,7 @@ func (b *RespaldoSpecApplyConfiguration) WithPVCName(value string) *RespaldoSpec
 // WithResourceName sets the ResourceName field in the declarative configuration to the given value
 // and returns the receiver, so that objects can be built by chaining "With" function invocations.
 // If called multiple times, the ResourceName field is set to the value of the last call.
-func (b *RespaldoSpecApplyConfiguration) WithResourceName(value string) *RespaldoSpecApplyConfiguration {
+func (b *BackupNRestoreSpecApplyConfiguration) WithResourceName(value string) *BackupNRestoreSpecApplyConfiguration {
 	b.ResourceName = &value
 	return b
 }
@@ -62,7 +62,7 @@ func (b *RespaldoSpecApplyConfiguration) WithResourceName(value string) *Respald
 // WithSnapshotName sets the SnapshotName field in the declarative configuration to the given value
 // and returns the receiver, so that objects can be built by chaining "With" function invocations.
 // If called multiple times, the SnapshotName field is set to the value of the last call.
-func (b *RespaldoSpecApplyConfiguration) WithSnapshotName(value string) *RespaldoSpecApplyConfiguration {
+func (b *BackupNRestoreSpecApplyConfiguration) WithSnapshotName(value string) *BackupNRestoreSpecApplyConfiguration {
 	b.SnapshotName = &value
 	return b
 }
@@ -70,7 +70,7 @@ func (b *RespaldoSpecApplyConfiguration) WithSnapshotName(value string) *Respald
 // WithBackup sets the Backup field in the declarative configuration to the given value
 // and returns the receiver, so that objects can be built by chaining "With" function invocations.
 // If called multiple times, the Backup field is set to the value of the last call.
-func (b *RespaldoSpecApplyConfiguration) WithBackup(value bool) *RespaldoSpecApplyConfiguration {
+func (b *BackupNRestoreSpecApplyConfiguration) WithBackup(value bool) *BackupNRestoreSpecApplyConfiguration {
 	b.Backup = &value
 	return b
 }
@@ -78,7 +78,7 @@ func (b *RespaldoSpecApplyConfiguration) WithBackup(value bool) *RespaldoSpecApp
 // WithRestore sets the Restore field in the declarative configuration to the given value
 // and returns the receiver, so that objects can be built by chaining "With" function invocations.
 // If called multiple times, the Restore field is set to the value of the last call.
-func (b *RespaldoSpecApplyConfiguration) WithRestore(value bool) *RespaldoSpecApplyConfiguration {
+func (b *BackupNRestoreSpecApplyConfiguration) WithRestore(value bool) *BackupNRestoreSpecApplyConfiguration {
 	b.Restore = &value
 	return b
 }

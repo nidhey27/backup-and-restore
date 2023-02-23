@@ -19,7 +19,7 @@ limitations under the License.
 package fake
 
 import (
-	v1alpha1 "github.com/nidhey27/respaldo/pkg/client/clientset/versioned/typed/nyctonid.dev/v1alpha1"
+	v1alpha1 "github.com/nidhey27/backup-and-restore/pkg/client/clientset/versioned/typed/nyctonid.dev/v1alpha1"
 	rest "k8s.io/client-go/rest"
 	testing "k8s.io/client-go/testing"
 )
@@ -28,8 +28,8 @@ type FakeNyctonidV1alpha1 struct {
 	*testing.Fake
 }
 
-func (c *FakeNyctonidV1alpha1) Respaldos(namespace string) v1alpha1.RespaldoInterface {
-	return &FakeRespaldos{c, namespace}
+func (c *FakeNyctonidV1alpha1) BackupNRestores(namespace string) v1alpha1.BackupNRestoreInterface {
+	return &FakeBackupNRestores{c, namespace}
 }
 
 // RESTClient returns a RESTClient that is used to communicate

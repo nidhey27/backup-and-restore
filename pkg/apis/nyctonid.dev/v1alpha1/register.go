@@ -22,11 +22,11 @@ func init() {
 
 func addKnowTypes(scheme *runtime.Scheme) error {
 
-	scheme.AddKnownTypes(SchemeGroupVersion, &Respaldo{}, &RespaldoList{})
+	scheme.AddKnownTypes(SchemeGroupVersion, &BackupNRestore{}, &BackupNRestoreList{})
 	metav1.AddToGroupVersion(scheme, SchemeGroupVersion)
 
 	return nil
 }
 
-// ~/go/src/generate-groups.sh  all github.com/nidhey27/respaldo/pkg/client github.com/nidhey27/respaldo/pkg/apis nyctonid.dev:v1alpha1 --go-header-file ~/go/src/hack/boilerplate.go.txt -o ./
-// controller-gen rbac:roleName=respaldo-role crd paths=./pkg/apis/nyctonid.dev/v1alpha1 output:crd:dir=./manifests output:stdout
+// ~/go/src/generate-groups.sh  all github.com/nidhey27/backup-and-restore/pkg/client github.com/nidhey27/backup-and-restore/pkg/apis nyctonid.dev:v1alpha1 --go-header-file ~/go/src/hack/boilerplate.go.txt -o ./
+// controller-gen rbac:roleName=backup-and-restore-role crd paths=./pkg/apis/nyctonid.dev/v1alpha1 output:crd:dir=./manifests output:stdout

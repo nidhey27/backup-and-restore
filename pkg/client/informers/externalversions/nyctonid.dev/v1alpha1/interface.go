@@ -19,13 +19,13 @@ limitations under the License.
 package v1alpha1
 
 import (
-	internalinterfaces "github.com/nidhey27/respaldo/pkg/client/informers/externalversions/internalinterfaces"
+	internalinterfaces "github.com/nidhey27/backup-and-restore/pkg/client/informers/externalversions/internalinterfaces"
 )
 
 // Interface provides access to all the informers in this group version.
 type Interface interface {
-	// Respaldos returns a RespaldoInformer.
-	Respaldos() RespaldoInformer
+	// BackupNRestores returns a BackupNRestoreInformer.
+	BackupNRestores() BackupNRestoreInformer
 }
 
 type version struct {
@@ -39,7 +39,7 @@ func New(f internalinterfaces.SharedInformerFactory, namespace string, tweakList
 	return &version{factory: f, namespace: namespace, tweakListOptions: tweakListOptions}
 }
 
-// Respaldos returns a RespaldoInformer.
-func (v *version) Respaldos() RespaldoInformer {
-	return &respaldoInformer{factory: v.factory, namespace: v.namespace, tweakListOptions: v.tweakListOptions}
+// BackupNRestores returns a BackupNRestoreInformer.
+func (v *version) BackupNRestores() BackupNRestoreInformer {
+	return &backupNRestoreInformer{factory: v.factory, namespace: v.namespace, tweakListOptions: v.tweakListOptions}
 }

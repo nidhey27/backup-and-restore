@@ -18,10 +18,10 @@ limitations under the License.
 
 package v1alpha1
 
-// RespaldoListerExpansion allows custom methods to be added to
-// RespaldoLister.
-type RespaldoListerExpansion interface{}
+// BackupNRestoreListerExpansion allows custom methods to be added to
+// BackupNRestoreLister.
+type BackupNRestoreListerExpansion interface{}
 
-// RespaldoNamespaceListerExpansion allows custom methods to be added to
-// RespaldoNamespaceLister.
-type RespaldoNamespaceListerExpansion interface{}
+// BackupNRestoreNamespaceListerExpansion allows custom methods to be added to
+// BackupNRestoreNamespaceLister.
+type BackupNRestoreNamespaceListerExpansion interface{}

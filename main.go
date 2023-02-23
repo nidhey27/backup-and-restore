@@ -6,7 +6,7 @@ import (
 	"log"
 	"path/filepath"
 
-	clientset "github.com/nidhey27/respaldo/pkg/client/clientset/versioned"
+	clientset "github.com/nidhey27/backup-and-restore/pkg/client/clientset/versioned"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/client-go/rest"
 	"k8s.io/client-go/tools/clientcmd"
@@ -36,10 +36,11 @@ func main() {
 		log.Printf("getting klientset set %s\n", err.Error())
 	}
 
-	respaldo, err := clientset.NyctonidV1alpha1().Respaldos("").List(context.Background(), metav1.ListOptions{})
+	respaldo, err := clientset.NyctonidV1alpha1().BackupNRestores("").List(context.Background(), metav1.ListOptions{})
 
 	if err != nil {
-		log.Printf("respaldo lisiting  %s\n", err.Error())
+		log.Printf("respaldo lisiting  %s\n", err)
+		// log.Panicln(err)
 	}
 
 	log.Println(len(respaldo.Items))

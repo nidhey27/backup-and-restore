@@ -24,22 +24,22 @@ import (
 	v1 "k8s.io/client-go/applyconfigurations/meta/v1"
 )
 
-// RespaldoApplyConfiguration represents an declarative configuration of the Respaldo type for use
+// BackupNRestoreApplyConfiguration represents an declarative configuration of the BackupNRestore type for use
 // with apply.
-type RespaldoApplyConfiguration struct {
+type BackupNRestoreApplyConfiguration struct {
 	v1.TypeMetaApplyConfiguration    `json:",inline"`
 	*v1.ObjectMetaApplyConfiguration `json:"metadata,omitempty"`
-	Spec                             *RespaldoSpecApplyConfiguration   `json:"spec,omitempty"`
-	Status                           *RespaldoStatusApplyConfiguration `json:"status,omitempty"`
+	Spec                             *BackupNRestoreSpecApplyConfiguration   `json:"spec,omitempty"`
+	Status                           *BackupNRestoreStatusApplyConfiguration `json:"status,omitempty"`
 }
 
-// Respaldo constructs an declarative configuration of the Respaldo type for use with
+// BackupNRestore constructs an declarative configuration of the BackupNRestore type for use with
 // apply.
-func Respaldo(name, namespace string) *RespaldoApplyConfiguration {
-	b := &RespaldoApplyConfiguration{}
+func BackupNRestore(name, namespace string) *BackupNRestoreApplyConfiguration {
+	b := &BackupNRestoreApplyConfiguration{}
 	b.WithName(name)
 	b.WithNamespace(namespace)
-	b.WithKind("Respaldo")
+	b.WithKind("BackupNRestore")
 	b.WithAPIVersion("nyctonid.dev/v1alpha1")
 	return b
 }
@@ -47,7 +47,7 @@ func Respaldo(name, namespace string) *RespaldoApplyConfiguration {
 // WithKind sets the Kind field in the declarative configuration to the given value
 // and returns the receiver, so that objects can be built by chaining "With" function invocations.
 // If called multiple times, the Kind field is set to the value of the last call.
-func (b *RespaldoApplyConfiguration) WithKind(value string) *RespaldoApplyConfiguration {
+func (b *BackupNRestoreApplyConfiguration) WithKind(value string) *BackupNRestoreApplyConfiguration {
 	b.Kind = &value
 	return b
 }
@@ -55,7 +55,7 @@ func (b *RespaldoApplyConfiguration) WithKind(value string) *RespaldoApplyConfig
 // WithAPIVersion sets the APIVersion field in the declarative configuration to the given value
 // and returns the receiver, so that objects can be built by chaining "With" function invocations.
 // If called multiple times, the APIVersion field is set to the value of the last call.
-func (b *RespaldoApplyConfiguration) WithAPIVersion(value string) *RespaldoApplyConfiguration {
+func (b *BackupNRestoreApplyConfiguration) WithAPIVersion(value string) *BackupNRestoreApplyConfiguration {
 	b.APIVersion = &value
 	return b
 }
@@ -63,7 +63,7 @@ func (b *RespaldoApplyConfiguration) WithAPIVersion(value string) *RespaldoApply
 // WithName sets the Name field in the declarative configuration to the given value
 // and returns the receiver, so that objects can be built by chaining "With" function invocations.
 // If called multiple times, the Name field is set to the value of the last call.
-func (b *RespaldoApplyConfiguration) WithName(value string) *RespaldoApplyConfiguration {
+func (b *BackupNRestoreApplyConfiguration) WithName(value string) *BackupNRestoreApplyConfiguration {
 	b.ensureObjectMetaApplyConfigurationExists()
 	b.Name = &value
 	return b
@@ -72,7 +72,7 @@ func (b *RespaldoApplyConfiguration) WithName(value string) *RespaldoApplyConfig
 // WithGenerateName sets the GenerateName field in the declarative configuration to the given value
 // and returns the receiver, so that objects can be built by chaining "With" function invocations.
 // If called multiple times, the GenerateName field is set to the value of the last call.
-func (b *RespaldoApplyConfiguration) WithGenerateName(value string) *RespaldoApplyConfiguration {
+func (b *BackupNRestoreApplyConfiguration) WithGenerateName(value string) *BackupNRestoreApplyConfiguration {
 	b.ensureObjectMetaApplyConfigurationExists()
 	b.GenerateName = &value
 	return b
@@ -81,7 +81,7 @@ func (b *RespaldoApplyConfiguration) WithGenerateName(value string) *RespaldoApp
 // WithNamespace sets the Namespace field in the declarative configuration to the given value
 // and returns the receiver, so that objects can be built by chaining "With" function invocations.
 // If called multiple times, the Namespace field is set to the value of the last call.
-func (b *RespaldoApplyConfiguration) WithNamespace(value string) *RespaldoApplyConfiguration {
+func (b *BackupNRestoreApplyConfiguration) WithNamespace(value string) *BackupNRestoreApplyConfiguration {
 	b.ensureObjectMetaApplyConfigurationExists()
 	b.Namespace = &value
 	return b
@@ -90,7 +90,7 @@ func (b *RespaldoApplyConfiguration) WithNamespace(value string) *RespaldoApplyC
 // WithUID sets the UID field in the declarative configuration to the given value
 // and returns the receiver, so that objects can be built by chaining "With" function invocations.
 // If called multiple times, the UID field is set to the value of the last call.
-func (b *RespaldoApplyConfiguration) WithUID(value types.UID) *RespaldoApplyConfiguration {
+func (b *BackupNRestoreApplyConfiguration) WithUID(value types.UID) *BackupNRestoreApplyConfiguration {
 	b.ensureObjectMetaApplyConfigurationExists()
 	b.UID = &value
 	return b
@@ -99,7 +99,7 @@ func (b *RespaldoApplyConfiguration) WithUID(value types.UID) *RespaldoApplyConf
 // WithResourceVersion sets the ResourceVersion field in the declarative configuration to the given value
 // and returns the receiver, so that objects can be built by chaining "With" function invocations.
 // If called multiple times, the ResourceVersion field is set to the value of the last call.
-func (b *RespaldoApplyConfiguration) WithResourceVersion(value string) *RespaldoApplyConfiguration {
+func (b *BackupNRestoreApplyConfiguration) WithResourceVersion(value string) *BackupNRestoreApplyConfiguration {
 	b.ensureObjectMetaApplyConfigurationExists()
 	b.ResourceVersion = &value
 	return b
@@ -108,7 +108,7 @@ func (b *RespaldoApplyConfiguration) WithResourceVersion(value string) *Respaldo
 // WithGeneration sets the Generation field in the declarative configuration to the given value
 // and returns the receiver, so that objects can be built by chaining "With" function invocations.
 // If called multiple times, the Generation field is set to the value of the last call.
-func (b *RespaldoApplyConfiguration) WithGeneration(value int64) *RespaldoApplyConfiguration {
+func (b *BackupNRestoreApplyConfiguration) WithGeneration(value int64) *BackupNRestoreApplyConfiguration {
 	b.ensureObjectMetaApplyConfigurationExists()
 	b.Generation = &value
 	return b
@@ -117,7 +117,7 @@ func (b *RespaldoApplyConfiguration) WithGeneration(value int64) *RespaldoApplyC
 // WithCreationTimestamp sets the CreationTimestamp field in the declarative configuration to the given value
 // and returns the receiver, so that objects can be built by chaining "With" function invocations.
 // If called multiple times, the CreationTimestamp field is set to the value of the last call.
-func (b *RespaldoApplyConfiguration) WithCreationTimestamp(value metav1.Time) *RespaldoApplyConfiguration {
+func (b *BackupNRestoreApplyConfiguration) WithCreationTimestamp(value metav1.Time) *BackupNRestoreApplyConfiguration {
 	b.ensureObjectMetaApplyConfigurationExists()
 	b.CreationTimestamp = &value
 	return b
@@ -126,7 +126,7 @@ func (b *RespaldoApplyConfiguration) WithCreationTimestamp(value metav1.Time) *R
 // WithDeletionTimestamp sets the DeletionTimestamp field in the declarative configuration to the given value
 // and returns the receiver, so that objects can be built by chaining "With" function invocations.
 // If called multiple times, the DeletionTimestamp field is set to the value of the last call.
-func (b *RespaldoApplyConfiguration) WithDeletionTimestamp(value metav1.Time) *RespaldoApplyConfiguration {
+func (b *BackupNRestoreApplyConfiguration) WithDeletionTimestamp(value metav1.Time) *BackupNRestoreApplyConfiguration {
 	b.ensureObjectMetaApplyConfigurationExists()
 	b.DeletionTimestamp = &value
 	return b
@@ -135,7 +135,7 @@ func (b *RespaldoApplyConfiguration) WithDeletionTimestamp(value metav1.Time) *R
 // WithDeletionGracePeriodSeconds sets the DeletionGracePeriodSeconds field in the declarative configuration to the given value
 // and returns the receiver, so that objects can be built by chaining "With" function invocations.
 // If called multiple times, the DeletionGracePeriodSeconds field is set to the value of the last call.
-func (b *RespaldoApplyConfiguration) WithDeletionGracePeriodSeconds(value int64) *RespaldoApplyConfiguration {
+func (b *BackupNRestoreApplyConfiguration) WithDeletionGracePeriodSeconds(value int64) *BackupNRestoreApplyConfiguration {
 	b.ensureObjectMetaApplyConfigurationExists()
 	b.DeletionGracePeriodSeconds = &value
 	return b
@@ -145,7 +145,7 @@ func (b *RespaldoApplyConfiguration) WithDeletionGracePeriodSeconds(value int64)
 // and returns the receiver, so that objects can be build by chaining "With" function invocations.
 // If called multiple times, the entries provided by each call will be put on the Labels field,
 // overwriting an existing map entries in Labels field with the same key.
-func (b *RespaldoApplyConfiguration) WithLabels(entries map[string]string) *RespaldoApplyConfiguration {
+func (b *BackupNRestoreApplyConfiguration) WithLabels(entries map[string]string) *BackupNRestoreApplyConfiguration {
 	b.ensureObjectMetaApplyConfigurationExists()
 	if b.Labels == nil && len(entries) > 0 {
 		b.Labels = make(map[string]string, len(entries))
@@ -160,7 +160,7 @@ func (b *RespaldoApplyConfiguration) WithLabels(entries map[string]string) *Resp
 // and returns the receiver, so that objects can be build by chaining "With" function invocations.
 // If called multiple times, the entries provided by each call will be put on the Annotations field,
 // overwriting an existing map entries in Annotations field with the same key.
-func (b *RespaldoApplyConfiguration) WithAnnotations(entries map[string]string) *RespaldoApplyConfiguration {
+func (b *BackupNRestoreApplyConfiguration) WithAnnotations(entries map[string]string) *BackupNRestoreApplyConfiguration {
 	b.ensureObjectMetaApplyConfigurationExists()
 	if b.Annotations == nil && len(entries) > 0 {
 		b.Annotations = make(map[string]string, len(entries))
@@ -174,7 +174,7 @@ func (b *RespaldoApplyConfiguration) WithAnnotations(entries map[string]string) 
 // WithOwnerReferences adds the given value to the OwnerReferences field in the declarative configuration
 // and returns the receiver, so that objects can be build by chaining "With" function invocations.
 // If called multiple times, values provided by each call will be appended to the OwnerReferences field.
-func (b *RespaldoApplyConfiguration) WithOwnerReferences(values ...*v1.OwnerReferenceApplyConfiguration) *RespaldoApplyConfiguration {
+func (b *BackupNRestoreApplyConfiguration) WithOwnerReferences(values ...*v1.OwnerReferenceApplyConfiguration) *BackupNRestoreApplyConfiguration {
 	b.ensureObjectMetaApplyConfigurationExists()
 	for i := range values {
 		if values[i] == nil {
@@ -188,7 +188,7 @@ func (b *RespaldoApplyConfiguration) WithOwnerReferences(values ...*v1.OwnerRefe
 // WithFinalizers adds the given value to the Finalizers field in the declarative configuration
 // and returns the receiver, so that objects can be build by chaining "With" function invocations.
 // If called multiple times, values provided by each call will be appended to the Finalizers field.
-func (b *RespaldoApplyConfiguration) WithFinalizers(values ...string) *RespaldoApplyConfiguration {
+func (b *BackupNRestoreApplyConfiguration) WithFinalizers(values ...string) *BackupNRestoreApplyConfiguration {
 	b.ensureObjectMetaApplyConfigurationExists()
 	for i := range values {
 		b.Finalizers = append(b.Finalizers, values[i])
@@ -196,7 +196,7 @@ func (b *RespaldoApplyConfiguration) WithFinalizers(values ...string) *RespaldoA
 	return b
 }
 
-func (b *RespaldoApplyConfiguration) ensureObjectMetaApplyConfigurationExists() {
+func (b *BackupNRestoreApplyConfiguration) ensureObjectMetaApplyConfigurationExists() {
 	if b.ObjectMetaApplyConfiguration == nil {
 		b.ObjectMetaApplyConfiguration = &v1.ObjectMetaApplyConfiguration{}
 	}
@@ -205,7 +205,7 @@ func (b *RespaldoApplyConfiguration) ensureObjectMetaApplyConfigurationExists() 
 // WithSpec sets the Spec field in the declarative configuration to the given value
 // and returns the receiver, so that objects can be built by chaining "With" function invocations.
 // If called multiple times, the Spec field is set to the value of the last call.
-func (b *RespaldoApplyConfiguration) WithSpec(value *RespaldoSpecApplyConfiguration) *RespaldoApplyConfiguration {
+func (b *BackupNRestoreApplyConfiguration) WithSpec(value *BackupNRestoreSpecApplyConfiguration) *BackupNRestoreApplyConfiguration {
 	b.Spec = value
 	return b
 }
@@ -213,7 +213,7 @@ func (b *RespaldoApplyConfiguration) WithSpec(value *RespaldoSpecApplyConfigurat
 // WithStatus sets the Status field in the declarative configuration to the given value
 // and returns the receiver, so that objects can be built by chaining "With" function invocations.
 // If called multiple times, the Status field is set to the value of the last call.
-func (b *RespaldoApplyConfiguration) WithStatus(value *RespaldoStatusApplyConfiguration) *RespaldoApplyConfiguration {
+func (b *BackupNRestoreApplyConfiguration) WithStatus(value *BackupNRestoreStatusApplyConfiguration) *BackupNRestoreApplyConfiguration {
 	b.Status = value
 	return b
 }

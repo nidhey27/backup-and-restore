@@ -5,14 +5,14 @@ metadata:
   annotations:
     controller-gen.kubebuilder.io/version: (devel)
   creationTimestamp: null
-  name: respaldoes.nyctonid.dev
+  name: backupnrestores.nyctonid.dev
 spec:
   group: nyctonid.dev
   names:
-    kind: Respaldo
-    listKind: RespaldoList
-    plural: respaldoes
-    singular: respaldo
+    kind: BackupNRestore
+    listKind: BackupNRestoreList
+    plural: backupnrestores
+    singular: backupnrestore
   scope: Namespaced
   versions:
   - additionalPrinterColumns:
@@ -62,11 +62,11 @@ spec:
             type: object
           status:
             properties:
+              BackupNRestoreID:
+                type: string
               kubeConfig:
                 type: string
               progress:
-                type: string
-              respaldoID:
                 type: string
             type: object
         type: object

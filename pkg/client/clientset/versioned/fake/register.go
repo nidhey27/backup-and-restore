@@ -19,7 +19,7 @@ limitations under the License.
 package fake
 
 import (
-	nyctonidv1alpha1 "github.com/nidhey27/respaldo/pkg/apis/nyctonid.dev/v1alpha1"
+	nyctonidv1alpha1 "github.com/nidhey27/backup-and-restore/pkg/apis/nyctonid.dev/v1alpha1"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	runtime "k8s.io/apimachinery/pkg/runtime"
 	schema "k8s.io/apimachinery/pkg/runtime/schema"

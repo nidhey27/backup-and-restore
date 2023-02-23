@@ -21,14 +21,14 @@ package v1alpha1
 import (
 	"net/http"
 
-	v1alpha1 "github.com/nidhey27/respaldo/pkg/apis/nyctonid.dev/v1alpha1"
-	"github.com/nidhey27/respaldo/pkg/client/clientset/versioned/scheme"
+	v1alpha1 "github.com/nidhey27/backup-and-restore/pkg/apis/nyctonid.dev/v1alpha1"
+	"github.com/nidhey27/backup-and-restore/pkg/client/clientset/versioned/scheme"
 	rest "k8s.io/client-go/rest"
 )
 
 type NyctonidV1alpha1Interface interface {
 	RESTClient() rest.Interface
-	RespaldosGetter
+	BackupNRestoresGetter
 }
 
 // NyctonidV1alpha1Client is used to interact with features provided by the nyctonid.dev group.
@@ -36,8 +36,8 @@ type NyctonidV1alpha1Client struct {
 	restClient rest.Interface
 }
 
-func (c *NyctonidV1alpha1Client) Respaldos(namespace string) RespaldoInterface {
-	return newRespaldos(c, namespace)
+func (c *NyctonidV1alpha1Client) BackupNRestores(namespace string) BackupNRestoreInterface {
+	return newBackupNRestores(c, namespace)
 }
 
 // NewForConfig creates a new NyctonidV1alpha1Client for the given config.
