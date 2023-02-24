@@ -16,9 +16,6 @@ spec:
   scope: Namespaced
   versions:
   - additionalPrinterColumns:
-    - jsonPath: .status.respaldoID
-      name: ClusterID
-      type: string
     - jsonPath: .status.progress
       name: Progress
       type: string
@@ -65,8 +62,6 @@ spec:
             type: object
           status:
             properties:
-              BackupNRestoreID:
-                type: string
               kubeConfig:
                 type: string
               progress:
