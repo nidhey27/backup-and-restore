@@ -217,14 +217,17 @@ func (c *Controller) Run(ch chan struct{}) error {
 
 // its gong to get called, whenever the resource is updated
 func (c *Controller) handleUpdate(ondObj, newObj interface{}) {
-	log.Println("obj updated")
+	res := newObj.(*nytonidv1aphla1.BackupNRestore)
+	log.Printf("%s updated", res.Name)
 }
 func (c *Controller) handleDel(obj interface{}) {
-	log.Println("obj deleted")
+	res := obj.(*nytonidv1aphla1.BackupNRestore)
+	log.Printf("%s deleted", res.Name)
 	c.wq.Add(obj)
 }
 func (c *Controller) handleAdd(obj interface{}) {
-	log.Println("obj created")
+	res := obj.(*nytonidv1aphla1.BackupNRestore)
+	log.Printf("%s created", res.Name)
 	c.wq.Add(obj)
 }
 
