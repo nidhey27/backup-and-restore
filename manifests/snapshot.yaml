@@ -9,4 +9,4 @@ spec:
   pvcname: pvc-claim-3
   resourcename: ""
   restore: false
-  snapshotname: ""
+  snapshotname: "snapshot-one"

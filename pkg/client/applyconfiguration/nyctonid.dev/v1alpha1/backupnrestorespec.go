@@ -23,6 +23,7 @@ package v1alpha1
 type BackupNRestoreSpecApplyConfiguration struct {
 	Namespace    *string `json:"namespace,omitempty"`
 	PVCName      *string `json:"pvcname,omitempty"`
+	Resource     *string `json:"resource,omitempty"`
 	ResourceName *string `json:"resourcename,omitempty"`
 	SnapshotName *string `json:"snapshotname,omitempty"`
 	Backup       *bool   `json:"backup,omitempty"`
@@ -48,6 +49,14 @@ func (b *BackupNRestoreSpecApplyConfiguration) WithNamespace(value string) *Back
 // If called multiple times, the PVCName field is set to the value of the last call.
 func (b *BackupNRestoreSpecApplyConfiguration) WithPVCName(value string) *BackupNRestoreSpecApplyConfiguration {
 	b.PVCName = &value
+	return b
+}
+
+// WithResource sets the Resource field in the declarative configuration to the given value
+// and returns the receiver, so that objects can be built by chaining "With" function invocations.
+// If called multiple times, the Resource field is set to the value of the last call.
+func (b *BackupNRestoreSpecApplyConfiguration) WithResource(value string) *BackupNRestoreSpecApplyConfiguration {
+	b.Resource = &value
 	return b
 }
 

@@ -20,8 +20,12 @@ type BackupNRestoreSpec struct {
 	// +kubebuilder:validation:Required
 	Namespace string `json:"namespace"`
 	// +kubebuilder:validation:Required
-	PVCName      string `json:"pvcname"`
+	PVCName string `json:"pvcname"`
+	// +kubebuilder:validation:Required
+	Resource string `json:"resource"`
+	// +kubebuilder:validation:Required
 	ResourceName string `json:"resourcename"`
+	// +kubebuilder:validation:Required
 	SnapshotName string `json:"snapshotname"`
 	// +kubebuilder:validation:Required
 	Backup bool `json:"backup"`

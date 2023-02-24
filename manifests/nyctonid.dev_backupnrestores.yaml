@@ -46,6 +46,8 @@ spec:
                 type: string
               pvcname:
                 type: string
+              resource:
+                type: string
               resourcename:
                 type: string
               restore:
@@ -56,6 +58,7 @@ spec:
             - backup
             - namespace
             - pvcname
+            - resource
             - resourcename
             - restore
             - snapshotname
