@@ -158,8 +158,11 @@ func (c *Controller) processNextItem() bool {
 			log.Printf("ERROR[Waiting for snapshot]: %s\n", err.Error())
 			c.recorder.Event(backupNRestore, corev1.EventTypeNormal, "BackupNRestoreCreation", err.Error())
 			c.updateStatus("PVCError", backupNRestore)
-			return false
+
 		}
+
+		c.recorder.Event(backupNRestore, corev1.EventTypeNormal, "BackupNRestoreCreation", pvc.Name+" Bounded to "+backupNRestore.Spec.ResourceName)
+		c.updateStatus("PVC Bounded", backupNRestore)
 
 		err = c.updateStatus("Restored", backupNRestore)
 		if err != nil {
