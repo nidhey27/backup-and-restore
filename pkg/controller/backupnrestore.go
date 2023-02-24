@@ -7,38 +7,30 @@ import (
 	"time"
 
 	volumesnapshot "github.com/kubernetes-csi/external-snapshotter/client/v6/apis/volumesnapshot/v1"
+	snapshotclient "github.com/kubernetes-csi/external-snapshotter/client/v6/clientset/versioned"
 	"github.com/nidhey27/backup-and-restore/pkg/apis/nyctonid.dev/v1alpha1"
+	nytonidv1aphla1 "github.com/nidhey27/backup-and-restore/pkg/apis/nyctonid.dev/v1alpha1"
 	clientset "github.com/nidhey27/backup-and-restore/pkg/client/clientset/versioned"
 	"github.com/nidhey27/backup-and-restore/pkg/client/clientset/versioned/scheme"
 	kinf "github.com/nidhey27/backup-and-restore/pkg/client/informers/externalversions/nyctonid.dev/v1alpha1"
 	clister "github.com/nidhey27/backup-and-restore/pkg/client/listers/nyctonid.dev/v1alpha1"
 	"github.com/pkg/errors"
 	corev1 "k8s.io/api/core/v1"
-
-	// "k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
-	genericclioptions "k8s.io/cli-runtime/pkg/genericclioptions"
-
-	// "k8s.io/cli-runtime/pkg/genericclioptions"
-	cmdutils "k8s.io/kubectl/pkg/cmd/util"
-
-	// "github.com/viveksinghggits/kluster/pkg/apis/viveksingh.dev/v1alpha1"
-	// corev1 "k8s.io/api/core/v1"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	resource "k8s.io/apimachinery/pkg/api/resource"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime/schema"
-	"k8s.io/apimachinery/pkg/util/runtime"
+	runtime "k8s.io/apimachinery/pkg/util/runtime"
 	"k8s.io/apimachinery/pkg/util/wait"
+	genericclioptions "k8s.io/cli-runtime/pkg/genericclioptions"
 	"k8s.io/client-go/dynamic"
 	"k8s.io/client-go/kubernetes"
 	typedcorev1 "k8s.io/client-go/kubernetes/typed/core/v1"
 	"k8s.io/client-go/tools/cache"
 	"k8s.io/client-go/tools/record"
 	"k8s.io/client-go/util/workqueue"
-
-	snapshotclient "github.com/kubernetes-csi/external-snapshotter/client/v6/clientset/versioned"
-	nytonidv1aphla1 "github.com/nidhey27/backup-and-restore/pkg/apis/nyctonid.dev/v1alpha1"
+	cmdutils "k8s.io/kubectl/pkg/cmd/util"
 )
 
 type Controller struct {
@@ -93,68 +85,117 @@ func (c *Controller) worker() {
 func (c *Controller) processNextItem() bool {
 	item, shutDown := c.wq.Get()
 	if shutDown {
-		// logs as well
 		return false
 	}
 	defer c.wq.Forget(item)
 	key, err := cache.MetaNamespaceKeyFunc(item)
 	if err != nil {
-		log.Printf("error %s calling Namespace key func on cache for item", err.Error())
+		log.Printf("ERROR[Calling Namespace key func on cache for item]: %s \n", err.Error())
 		return false
 	}
 	ns, name, err := cache.SplitMetaNamespaceKey(key)
 	if err != nil {
-		log.Printf("splitting key into namespace and name, error %s\n", err.Error())
+		log.Printf("ERROR[Splitting key into namespace and name]: %s\n", err.Error())
 		return false
 	}
-	// fmt.Println(ns, name)
 	backupNRestore, err := c.kLister.BackupNRestores(ns).Get(name)
 	if err != nil {
 		if apierrors.IsNotFound(err) {
 			return false
 		}
 
-		log.Printf("error %s, Getting the BackupNRestores resource from lister", err.Error())
+		log.Printf("ERROR[Getting the BackupNRestores resource from lister]: %s\n", err.Error())
 		return false
 	}
-	// log.Printf("BackupNRestores spec that we have is %+v\n", backupNRestore.Spec)
 	if backupNRestore.Spec.Backup {
 		vs, err := c.createSnapshot(backupNRestore)
 		if err != nil {
-			// do something
-			log.Printf("errro %s, creating the Snapshot", err.Error())
+			log.Printf("ERROR[Creating the Snapshot]: %s", err.Error())
+			c.recorder.Event(backupNRestore, corev1.EventTypeNormal, "BackupNRestoreCreation", err.Error())
+			c.updateStatus("SnapshotError", backupNRestore)
+			return false
 		}
-		c.recorder.Event(backupNRestore, corev1.EventTypeNormal, "BackupNRestoreCreation", "createSnapshot func was called to create snapshot")
-		err = c.updateStatus("creating", backupNRestore)
+		c.recorder.Event(backupNRestore, corev1.EventTypeNormal, "BackupNRestoreCreation", "createSnapshot() was called to create snapshot")
+		err = c.updateStatus("Creating", backupNRestore)
 		if err != nil {
-			log.Printf("error %s, updating status of the backupNRestore %s\n", err.Error(), backupNRestore.Name)
+			log.Printf("ERROR[updating status of the backupNRestore]: %s, [CR NAME]: %s\n", err.Error(), backupNRestore.Name)
+			c.recorder.Event(backupNRestore, corev1.EventTypeNormal, "BackupNRestoreCreation", err.Error())
+			return false
 		}
-		// query DO API to make sure clsuter' state is running
-		err = c.waitForSnapshot(*vs, vs.Name)
+		err = c.waitForSnapshot(*vs)
 		if err != nil {
-			log.Printf("error %s, waiting for snapshot", err.Error())
+			log.Printf("ERROR[Waiting for snapshot]: %s\n", err.Error())
+			c.recorder.Event(backupNRestore, corev1.EventTypeNormal, "BackupNRestoreCreation", err.Error())
+			c.updateStatus("SnapshotError", backupNRestore)
+			return false
 		}
 		err = c.updateStatus("Created", backupNRestore)
 		if err != nil {
-			log.Printf("error %s ", err.Error())
+			log.Printf("ERROR[]: %s ", err.Error())
+			c.recorder.Event(backupNRestore, corev1.EventTypeNormal, "BackupNRestoreCreation", err.Error())
+			return false
 		}
 		c.recorder.Event(backupNRestore, corev1.EventTypeNormal, "BackupNRestoreCompleted", "VolumeSnapshot was completed")
 
 	} else if backupNRestore.Spec.Restore {
-		// log.Println("RESTOR")
-		// c.createPVC(backupNRestore)
-		c.restoreSnapsShot(backupNRestore)
-		c.recorder.Event(backupNRestore, corev1.EventTypeNormal, "BackupNRestoreCreation", "restoreSnapsShot func was called to restore snapshot")
-		err = c.updateStatus("restoring", backupNRestore)
+		c.recorder.Event(backupNRestore, corev1.EventTypeNormal, "BackupNRestoreCreation", "restoreSnapsShot() was called to restore snapshot")
+		pvc, err := c.restoreSnapsShot(backupNRestore)
 		if err != nil {
-			log.Printf("error %s, updating status of the backupNRestore %s\n", err.Error(), backupNRestore.Name)
+			log.Printf("ERROR[RESTORING SNAPSHOT]: %s, [CR NAME] %s\n", err.Error(), backupNRestore.Name)
+			c.recorder.Event(backupNRestore, corev1.EventTypeNormal, "BackupNRestoreCreation", err.Error())
+			c.updateStatus("PVCError", backupNRestore)
+			return false
+		}
+		err = c.updateStatus("Restoring", backupNRestore)
+		if err != nil {
+			log.Printf("ERROR[updating status of the backupNRestore]: %s, [CR NAME] %s\n", err.Error(), backupNRestore.Name)
+			c.recorder.Event(backupNRestore, corev1.EventTypeNormal, "BackupNRestoreCreation", err.Error())
+			c.updateStatus("PVCError", backupNRestore)
+			return false
+		}
+		err = c.waitForPVC(pvc)
+		if err != nil {
+			log.Printf("ERROR[Waiting for snapshot]: %s\n", err.Error())
+			c.recorder.Event(backupNRestore, corev1.EventTypeNormal, "BackupNRestoreCreation", err.Error())
+			c.updateStatus("PVCError", backupNRestore)
+			return false
+		}
+
+		err = c.updateStatus("Restored", backupNRestore)
+		if err != nil {
+			log.Printf("ERROR[]: %s ", err.Error())
+			c.recorder.Event(backupNRestore, corev1.EventTypeNormal, "BackupNRestoreCreation", err.Error())
+			return false
 		}
 	}
 
 	return true
 }
 
-func (c *Controller) waitForSnapshot(vs volumesnapshot.VolumeSnapshot, snapshotName string) error {
+func (c *Controller) waitForPVC(pvc *corev1.PersistentVolumeClaim) error {
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Minute)
+	defer cancel()
+
+	res, err := c.client.CoreV1().PersistentVolumeClaims(pvc.Namespace).Get(ctx, pvc.Name, metav1.GetOptions{})
+
+	if err != nil {
+		return err
+	}
+
+	phase := res.Status.Phase
+
+	switch phase {
+	case corev1.ClaimPending:
+		err = errors.Errorf("PVC is pending")
+	case corev1.ClaimBound:
+		err = nil
+	case corev1.ClaimLost:
+		err = errors.Errorf("PVC binding is lost")
+	}
+	return err
+}
+
+func (c *Controller) waitForSnapshot(vs volumesnapshot.VolumeSnapshot) error {
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Minute)
 	defer cancel()
 
@@ -201,11 +242,7 @@ func (c *Controller) updateStatus(progress string, kluster *v1alpha1.BackupNRest
 
 func (c *Controller) createSnapshot(obj *nytonidv1aphla1.BackupNRestore) (*volumesnapshot.VolumeSnapshot, error) {
 	ctx := context.Background()
-	// current_time := time.Now()
-	// timeStamp := fmt.Sprintf("%d-%02d-%02dt%02d-%02d-%02dt", current_time.Year(), current_time.Month(), current_time.Day(),
-	// 	current_time.Hour(), current_time.Minute(), current_time.Second())
 
-	// fmt.Println(obj.Spec.PVCName + timeStamp)
 	volumeSnapshotClassName := "csi-hostpath-snapclass"
 	pvcName := obj.Spec.PVCName
 	volumeShnapshot := volumesnapshot.VolumeSnapshot{
@@ -230,21 +267,21 @@ func (c *Controller) createSnapshot(obj *nytonidv1aphla1.BackupNRestore) (*volum
 	return vs, nil
 }
 
-func (c *Controller) restoreSnapsShot(obj *nytonidv1aphla1.BackupNRestore) error {
+func (c *Controller) restoreSnapsShot(obj *nytonidv1aphla1.BackupNRestore) (*corev1.PersistentVolumeClaim, error) {
 	ctx := context.Background()
 	configFlag := genericclioptions.NewConfigFlags(true).WithDeprecatedPasswordFlag()
 	macthedVersion := cmdutils.NewMatchVersionFlags(configFlag)
 	m, err := cmdutils.NewFactory(macthedVersion).ToRESTMapper()
 	if err != nil {
 		fmt.Printf("gettign rest mapper from newfactory %s", err.Error())
-		return err
+		return nil, err
 	}
 	gvr, err := m.ResourceFor(schema.GroupVersionResource{
 		Resource: obj.Spec.Resource,
 	})
 	if err != nil {
 		fmt.Printf("ERROR GVR: %s\n", err.Error())
-		return err
+		return nil, err
 	}
 	log.Println(gvr)
 	resource, err := c.dynamicclientset.Resource(schema.GroupVersionResource{
@@ -254,22 +291,21 @@ func (c *Controller) restoreSnapsShot(obj *nytonidv1aphla1.BackupNRestore) error
 	}).Namespace(obj.Spec.Namespace).Get(ctx, obj.Spec.ResourceName, metav1.GetOptions{})
 	if err != nil {
 		fmt.Printf("ERROR: %s\n", err.Error())
-		return err
-	}
-	if gvr.Resource == "deployments" || gvr.Resource == "" {
-		pvc, err := c.createPVC(obj)
-		if err != nil {
-			fmt.Printf("ERROR: %s\n", err.Error())
-			return err
-		}
-		err = c.updateDeploymentVolume(gvr, resource, obj.Spec.Namespace, pvc.Name)
-		if err != nil {
-			fmt.Printf("ERROR: %s\n", err.Error())
-			return err
-		}
+		return nil, err
 	}
 
-	return nil
+	pvc, err := c.createPVC(obj)
+	if err != nil {
+		fmt.Printf("ERROR: %s\n", err.Error())
+		return nil, err
+	}
+	err = c.updateDeploymentVolume(gvr, resource, obj.Spec.Namespace, pvc.Name)
+	if err != nil {
+		fmt.Printf("ERROR: %s\n", err.Error())
+		return nil, err
+	}
+
+	return pvc, nil
 }
 
 func (c *Controller) createPVC(obj *nytonidv1aphla1.BackupNRestore) (*corev1.PersistentVolumeClaim, error) {
@@ -341,8 +377,6 @@ func (c *Controller) updateDeploymentVolume(gvr schema.GroupVersionResource, res
 	volInterface = newVols
 
 	resource.Object["spec"].(map[string]interface{})["template"].(map[string]interface{})["spec"].(map[string]interface{})["volumes"] = newVols
-
-	// log.Println(resource.Object["spec"].(map[string]interface{})["template"].(map[string]interface{})["spec"].(map[string]interface{})["volumes"])
 	_, err = c.dynamicclientset.Resource(schema.GroupVersionResource{
 		Group:    gvr.Group,
 		Version:  gvr.Version,

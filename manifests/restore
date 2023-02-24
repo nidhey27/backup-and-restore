@@ -2,7 +2,7 @@
 apiVersion: nyctonid.dev/v1alpha1
 kind: BackupNRestore
 metadata:
-  name: backup-n-restore-1
+  name: backup-n-restore-2
 spec:
   backup: false
   namespace: default
