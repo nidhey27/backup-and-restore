@@ -58,8 +58,6 @@ func (c *Controller) validateBackup(namespace string, PVCName string, snapshotNa
 
 	if err != nil {
 		return err
-	} else if err == nil {
-		return errors.Errorf("%s PVC alreay exists.")
 	}
 
 	gvr_vs, err := getGVR("volumesnapshots")
@@ -117,9 +115,7 @@ func (c *Controller) validateRestore(namespace string, resource string, resource
 		Resource: gvr_pvc.Resource,
 	}).Namespace(namespace).Get(ctx, PVCName, metav1.GetOptions{})
 
-	if err != nil {
-		return errors.Errorf("%s PVC alreay exists.")
-	} else if err == nil {
+	if err == nil {
 		return errors.Errorf("%s PVC alreay exists.")
 	}
 

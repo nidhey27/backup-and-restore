@@ -6,7 +6,7 @@ metadata:
 spec:
   backup: false
   namespace: default
-  pvcname: pvc-claim-5
+  pvcname: pvc-claim-6
   resource: "deployments"
   resourcename: "mysql-deployment"
   restore: true
