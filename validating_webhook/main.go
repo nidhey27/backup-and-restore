@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
 	"io/ioutil"
 	"log"
@@ -153,8 +154,21 @@ func ServeCRValidation(w http.ResponseWriter, r *http.Request) {
 			},
 		}
 	}
+	admissionReview.Response = &resp
+	// fmt.Println(resp)
+	log.Printf("respoknse that we are trying to return is %+v\n", resp)
+	res, err := json.Marshal(admissionReview)
 
-	fmt.Println(resp)
+	if err != nil {
+		log.Printf("error %s, while converting response to byte slice", err.Error())
+	}
+
+	_, err = w.Write(res)
+
+	if err != nil {
+		log.Printf("error %s, writing respnse to responsewriter", err.Error())
+	}
+
 }
 
 func validateBackupNRestore(br backupnrestorev1alpha1.BackupNRestore) (bool, error) {
