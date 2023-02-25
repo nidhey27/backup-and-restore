@@ -2,12 +2,18 @@ package main
 
 import (
 	"fmt"
+	"io/ioutil"
 	"log"
 	"net/http"
 	"os"
 	"time"
 
+	backupnrestorev1alpha1 "github.com/nidhey27/backup-and-restore/pkg/apis/nyctonid.dev/v1alpha1"
 	"github.com/spf13/pflag"
+	admv1beta1 "k8s.io/api/admission/v1beta1"
+	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	"k8s.io/apimachinery/pkg/runtime"
+	"k8s.io/apimachinery/pkg/runtime/serializer"
 	"k8s.io/apiserver/pkg/server"
 	"k8s.io/apiserver/pkg/server/options"
 	"k8s.io/component-base/cli/globalflag"
@@ -86,8 +92,84 @@ func main() {
 	} else {
 		<-ch
 	}
+
 }
+
+var (
+	scheme = runtime.NewScheme()
+	codecs = serializer.NewCodecFactory(scheme)
+)
 
 func ServeCRValidation(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("ServeCRValidation was called")
+
+	body, err := ioutil.ReadAll(r.Body)
+
+	if err != nil {
+		log.Printf("ERROR[Getting Body] %s\n", err.Error())
+	}
+
+	// Read body and get instance of admissionReview object
+	decoder := codecs.UniversalDeserializer()
+
+	// get GVk for admissionReview Object
+	gvk := admv1beta1.SchemeGroupVersion.WithKind("AdmisisonReview")
+
+	// Var of type admission review
+	var admissionReview admv1beta1.AdmissionReview
+	_, _, err = decoder.Decode(body, &gvk, &admissionReview)
+
+	if err != nil {
+		log.Printf("ERROR[Converting Req Body to Admission Type] %s\n", err.Error())
+	}
+
+	// convert cr spec from admission review object
+	gvk_cr := admv1beta1.SchemeGroupVersion.WithKind("BackupNRestore")
+	var br backupnrestorev1alpha1.BackupNRestore
+	_, _, err = decoder.Decode(admissionReview.Request.Object.Raw, &gvk_cr, &br)
+
+	if err != nil {
+		log.Printf("ERROR[Converting Admission Req Raw Obj to BackupNRestore Type] %s\n", err.Error())
+	}
+
+	fmt.Printf("BR taht we have is %+v\n", br)
+	allow, err := validateBackupNRestore(br)
+	var resp admv1beta1.AdmissionResponse
+
+	if !allow || err != nil {
+		resp = admv1beta1.AdmissionResponse{
+			UID:     admissionReview.Request.UID,
+			Allowed: allow,
+			Result: &v1.Status{
+				Message: err.Error(),
+			},
+		}
+	} else {
+		resp = admv1beta1.AdmissionResponse{
+			UID:     admissionReview.Request.UID,
+			Allowed: allow,
+			Result: &v1.Status{
+				Message: "",
+			},
+		}
+	}
+
+	fmt.Println(resp)
+}
+
+func validateBackupNRestore(br backupnrestorev1alpha1.BackupNRestore) (bool, error) {
+
+	if br.Spec.Backup {
+		err := validateBackup(br.Spec.Namespace, br.Spec.PVCName, br.Spec.SnapshotName)
+		if err != nil {
+			return false, err
+		}
+	} else if br.Spec.Restore {
+		err := validateRestore(br.Spec.Namespace, br.Spec.Resource, br.Spec.ResourceName, br.Spec.PVCName, br.Spec.SnapshotName)
+		if err != nil {
+			return false, err
+		}
+	}
+
+	return true, nil
 }
