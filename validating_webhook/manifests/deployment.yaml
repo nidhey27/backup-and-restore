@@ -18,7 +18,7 @@ spec:
         app: valcon
     spec:
       containers:
-      - image: nidhey27/val-controller:0.0.4
+      - image: nidhey27/val-controller:0.0.12
         name: val-controller
         args:
         - --tls-cert-file=/var/run/webhook/serving-cert/tls.crt
@@ -32,6 +32,7 @@ spec:
         - name: serving-cert
           secret:
             secretName: certs
+      serviceAccountName: valcon-sa
 status: {}
 
 # ./val-controller --tls-cert-file=/home/nidhey/Documents/k8s_controllers/respaldos/validating_webhook/manifests/cert/tls.crt --tls-private-key-file=/home/nidhey/Documents/k8s_controllers/respaldos/validating_webhook/manifests/cert/tls.key --v=4

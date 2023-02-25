@@ -2,11 +2,13 @@ package main
 
 import (
 	"encoding/json"
+	"flag"
 	"fmt"
 	"io/ioutil"
 	"log"
 	"net/http"
 	"os"
+	"path/filepath"
 	"time"
 
 	backupnrestorev1alpha1 "github.com/nidhey27/backup-and-restore/pkg/apis/nyctonid.dev/v1alpha1"
@@ -17,12 +19,17 @@ import (
 	"k8s.io/apimachinery/pkg/runtime/serializer"
 	"k8s.io/apiserver/pkg/server"
 	"k8s.io/apiserver/pkg/server/options"
+	"k8s.io/client-go/rest"
+	"k8s.io/client-go/tools/clientcmd"
+	"k8s.io/client-go/util/homedir"
 	"k8s.io/component-base/cli/globalflag"
 )
 
 const (
 	valCon = "val-controller"
 )
+
+var config *rest.Config
 
 type Options struct {
 	SecureServingOptions options.SecureServingOptions
@@ -60,6 +67,30 @@ func NewDefaultOptions() *Options {
 	o.SecureServingOptions.ServerCert.PairName = valCon
 
 	return o
+}
+
+func init() {
+	// ######## KUBECONFIG FOR CLIENT SET ########
+	var err error
+	var kubeconfig *string
+
+	if home := homedir.HomeDir(); home != "" {
+		kubeconfig = flag.String("kubeconfig", filepath.Join(home, ".kube", "config"), "(optional) absolute path to the kubeconfig file")
+	} else {
+		kubeconfig = flag.String("kubeconfig", "", "absolute path to the kubeconfig file")
+	}
+	// flag.Parse()
+	config, err = clientcmd.BuildConfigFromFlags("", *kubeconfig)
+	if err != nil {
+		log.Printf("Building config from flags failed, %s, trying to build inclusterconfig", err.Error())
+		config, err = rest.InClusterConfig()
+		if err != nil {
+			log.Printf("ERROR[Building config]: %s\n", err.Error())
+
+		}
+	}
+
+	// ######## KUBECONFIG FOR CLIENT SET ########
 }
 
 func main() {
@@ -134,7 +165,9 @@ func ServeCRValidation(w http.ResponseWriter, r *http.Request) {
 	}
 
 	fmt.Printf("BR taht we have is %+v\n", br)
-	allow, err := validateBackupNRestore(br)
+
+	c := newController(config)
+	allow, err := validateBackupNRestore(c, br)
 	var resp admv1beta1.AdmissionResponse
 
 	if !allow || err != nil {
@@ -171,15 +204,15 @@ func ServeCRValidation(w http.ResponseWriter, r *http.Request) {
 
 }
 
-func validateBackupNRestore(br backupnrestorev1alpha1.BackupNRestore) (bool, error) {
+func validateBackupNRestore(c *Controller, br backupnrestorev1alpha1.BackupNRestore) (bool, error) {
 
 	if br.Spec.Backup {
-		err := validateBackup(br.Spec.Namespace, br.Spec.PVCName, br.Spec.SnapshotName)
+		err := c.validateBackup(br.Spec.Namespace, br.Spec.PVCName, br.Spec.SnapshotName)
 		if err != nil {
 			return false, err
 		}
 	} else if br.Spec.Restore {
-		err := validateRestore(br.Spec.Namespace, br.Spec.Resource, br.Spec.ResourceName, br.Spec.PVCName, br.Spec.SnapshotName)
+		err := c.validateRestore(br.Spec.Namespace, br.Spec.Resource, br.Spec.ResourceName, br.Spec.PVCName, br.Spec.SnapshotName)
 		if err != nil {
 			return false, err
 		}
