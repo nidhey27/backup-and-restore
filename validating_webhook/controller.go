@@ -71,9 +71,7 @@ func (c *Controller) validateBackup(namespace string, PVCName string, snapshotNa
 		Resource: gvr_vs.Resource,
 	}).Namespace(namespace).Get(ctx, snapshotName, metav1.GetOptions{})
 
-	if err != nil {
-		return err
-	} else if err == nil {
+	if err == nil {
 		return errors.Errorf("%s VolumeSnapshot alreay exists.")
 	}
 

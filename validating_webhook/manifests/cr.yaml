@@ -12,6 +12,9 @@ rules:
   - get
   - list
   - watch
+  - update
+  - patch
+  - create
 - apiGroups:
   - ""
   resources:
@@ -20,6 +23,9 @@ rules:
   - get
   - list
   - watch
+  - update
+  - patch
+  - create
 - apiGroups:
   - snapshot.storage.k8s.io
   resources:
@@ -28,3 +34,17 @@ rules:
   - get
   - list
   - watch
+  - update
+  - patch
+  - create
+- apiGroups:
+  - nyctonid.dev
+  resources:
+  - backupnrestores
+  verbs:
+  - get
+  - list
+  - watch
+  - update
+  - patch
+  - create

@@ -18,7 +18,7 @@ spec:
         app: valcon
     spec:
       containers:
-      - image: nidhey27/val-controller:0.0.13
+      - image: nidhey27/val-controller:0.0.16
         name: val-controller
         args:
         - --tls-cert-file=/var/run/webhook/serving-cert/tls.crt

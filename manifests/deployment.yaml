@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: valcon-operator
+  name: valcon-operator
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: valcon-operator
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: valcon-operator
+    spec:
+      containers:
+      - image: nidhey27/backupnrestore:0.0.1
+        name: val-controller
+        resources: {}
+      serviceAccountName: valcon-sa
+status: {}
