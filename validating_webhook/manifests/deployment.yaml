@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: valcon
+  name: valcon
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: valcon
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: valcon
+    spec:
+      containers:
+      - image: nidhey27/val-controller:0.0.13
+        name: val-controller
+        args:
+        - --tls-cert-file=/var/run/webhook/serving-cert/tls.crt
+        - --tls-private-key-file=/var/run/webhook/serving-cert/tls.key
+        - --v=4
+        resources: {}
+        volumeMounts:
+          - name: serving-cert
+            mountPath: /var/run/webhook/serving-cert
+      volumes:
+        - name: serving-cert
+          secret:
+            secretName: certs
+      serviceAccountName: valcon-sa
+status: {}
+
+# ./val-controller --tls-cert-file=/home/nidhey/Documents/k8s_controllers/respaldos/validating_webhook/manifests/cert/tls.crt --tls-private-key-file=/home/nidhey/Documents/k8s_controllers/respaldos/validating_webhook/manifests/cert/tls.key --v=4
+
+# openssl req -new -x509 -subj "/CN=valcon.default.svc"  -addext "subjectAltName = DNS:valcon.default.svc" -nodes -newkey rsa:4096 -keyout tls.key -out tls.crt -days 365
