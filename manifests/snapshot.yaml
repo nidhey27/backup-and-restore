@@ -1,0 +1,13 @@
+---
+apiVersion: nyctonid.dev/v1alpha1
+kind: BackupNRestore
+metadata:
+  name: backup-n-restore-1
+spec:
+  backup: true
+  namespace: default
+  pvcname: pvc-claim-3
+  resource: "deployments"
+  resourcename:  "mysql-deployment"
+  restore: false
+  snapshotname: "snapshot-one"
